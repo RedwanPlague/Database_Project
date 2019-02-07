@@ -93,7 +93,7 @@
             <br/>
 
             <p> <input type="button" onclick="window.location = 'back_to_home.php';" name="back" value="back"/>
-                <input type="button" onclick="window.location = 'logOut.php';" name="logOut" value="log out"/>
+                <input type="button" onclick="window.location = 'logout.php';" name="logOut" value="log out"/>
             </p>
         </form>
     </body>

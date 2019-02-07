@@ -33,7 +33,7 @@
             <p> <input type="button" onclick="window.location = 'test_info.php';" name="knowTest" value="know test"/> </p>
             <p> <input type="button" onclick="window.location = 'test_book.php';" name="bookTest" value="book test"/> </p>
             <br/>
-            <p> <input type="button" onclick="window.location = 'logOut.php';" name="logOut" value="log out"/> </p>
+            <p> <input type="button" onclick="window.location = 'logout.php';" name="logOut" value="log out"/> </p>
         </form>
     </body>
 </html>

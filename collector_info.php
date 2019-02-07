@@ -2,6 +2,14 @@
     session_start();
     require 'connection.php';
 
+    if(isset($_SESSION['logged_in']) == false) {
+        header("Location: index.php");
+    }
+
+    if($_SESSION["role"] != "lab admin") {
+        header("Location: logout.php");
+    }
+
     if(!isset($_GET['id']))
         $all = true;
     else
@@ -20,46 +28,44 @@
             echo " - $collector_row[$i]";
         }
     }
-    
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
+  <!DOCTYPE html>
+  <html lang="en">
 
-<head>
-    <title>
-        <?php
-        if($all)
-            echo "Lab List";
-        else
-            echo "$lab_info[1]";
-        ?>
-    </title>
-</head>
+  <head>
+      <title>
+          <?php
+          if($all)
+              echo "Lab List";
+          else
+              echo "$lab_info[1]";
+          ?>
+      </title>
+  </head>
 
-<body>
+  <body>
 
-<?php
+  <?php
+  if($all) {
+      $result = pg_query($db, "SELECT * FROM labs");
+      while($row = pg_fetch_row($result)) {
+          print_lab($row);
+          echo "<br>";
+      }
+  } else {
+      print_lab($lab_info);
+      echo "<br><br><br>Tests offered by this lab: <br>";
+      $result = pg_query($db, "SELECT * FROM tests WHERE test_id IN (SELECT test_id FROM offers WHERE lab_id = $lab_id)");
+      while($row = pg_fetch_row($result)) {
+          print_test($row);
+          echo "<br>";
+      }
+  }
 
-    if($all) {
-        $result = pg_query($db, "SELECT * FROM labs");
-        while($row = pg_fetch_row($result)) {
-            print_lab($row);
-            echo "<br>";
-        }
-    } else {
-        print_lab($lab_info);
-        echo "<br><br><br>Tests offered by this lab: <br>";
-        $result = pg_query($db, "SELECT * FROM tests WHERE test_id IN (SELECT test_id FROM offers WHERE lab_id = $lab_id)");
-        while($row = pg_fetch_row($result)) {
-            print_test($row);
-            echo "<br>";
-        }
-    }
+  ?>
 
-?>
-
-</body>
+  </body>
 
 </html>
 
