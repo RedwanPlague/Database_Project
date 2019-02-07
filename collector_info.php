@@ -30,43 +30,43 @@
     }
 ?>
 
-    <!DOCTYPE html>
-    <html lang="en">
+  <!DOCTYPE html>
+  <html lang="en">
 
-    <head>
-        <title>
-            <?php
-            if($all)
-                echo "Lab List";
-            else
-                echo "$lab_info[1]";
-            ?>
-        </title>
-    </head>
+  <head>
+      <title>
+          <?php
+          if($all)
+              echo "Lab List";
+          else
+              echo "$lab_info[1]";
+          ?>
+      </title>
+  </head>
 
-    <body>
+  <body>
 
-    <?php
-    if($all) {
-        $result = pg_query($db, "SELECT * FROM labs");
-        while($row = pg_fetch_row($result)) {
-            print_lab($row);
-            echo "<br>";
-        }
-    } else {
-        print_lab($lab_info);
-        echo "<br><br><br>Tests offered by this lab: <br>";
-        $result = pg_query($db, "SELECT * FROM tests WHERE test_id IN (SELECT test_id FROM offers WHERE lab_id = $lab_id)");
-        while($row = pg_fetch_row($result)) {
-            print_test($row);
-            echo "<br>";
-        }
-    }
-    /* la la la la la la */
-    ?>
+  <?php
+  if($all) {
+      $result = pg_query($db, "SELECT * FROM labs");
+      while($row = pg_fetch_row($result)) {
+          print_lab($row);
+          echo "<br>";
+      }
+  } else {
+      print_lab($lab_info);
+      echo "<br><br><br>Tests offered by this lab: <br>";
+      $result = pg_query($db, "SELECT * FROM tests WHERE test_id IN (SELECT test_id FROM offers WHERE lab_id = $lab_id)");
+      while($row = pg_fetch_row($result)) {
+          print_test($row);
+          echo "<br>";
+      }
+  }
 
-    </body>
+  ?>
 
-    </html>
+  </body>
+
+</html>
 
 <?php pg_close($db) ?>
