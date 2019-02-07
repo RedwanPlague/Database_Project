@@ -32,7 +32,7 @@
             <p> <input type="button" onclick="window.location = 'collectorInfo.php';" name="collectorInfo" value="collector info"/> </p>
             <p> <input type="button" onclick="window.location = 'sampleInfo.php';" name="sampleInfo" value="sample info"/> </p>
             <br/>
-            <p> <input type="button" onclick="window.location = 'logOut.php';" name="logOut" value="log out"/> </p>
+            <p> <input type="button" onclick="window.location = 'logout.php';" name="logOut" value="log out"/> </p>
         </form>
     </body>
 </html>
