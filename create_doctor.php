@@ -22,6 +22,16 @@
 
         if($matched == false) {
             pg_query($db, "INSERT INTO doctors(name, email, phone_no, password) VALUES ($name, $email, $phone, $password)");
+
+            $row = pg_fetch_row(pg_query($db, "SELECT * FROM doctors WHERE email = $email"));
+            $id = $row[0];
+
+            $_SESSION["id"] = $id;
+            $_SESSION["role"] = "doctor";
+            $_SESSION["logged_in"] = set;
+
+            header('Location: doctor_page.php');  // "Location: " is required
+            exit;
         }
 
         if($matched == true) {
