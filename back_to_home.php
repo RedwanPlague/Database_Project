@@ -1,6 +1,10 @@
 <?php
     session_start();
 
+    if(!isset($_SESSION['logged in'])) {
+        header("Location: index.php");
+    }
+
     if($_SESSION["role"] == "patient") {
         header("Location: patient_page.php");
     } else if($_SESSION["role"] == "lab admin") {

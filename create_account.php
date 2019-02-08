@@ -1,22 +1,7 @@
 <?php
     if(isset($_GET["role"]) == true) {
-        $selectOption = $_GET["role"];
-
-        if($selectOption == "patient") {
-            header("Location: create_patient.php");
-            exit;
-        } else if($selectOption == "lab admin") {
-            header("Location: create_lab.php");
-            exit;
-        } else if($selectOption == "doctor") {
-            header("Location: create_doctor.php");
-            exit;
-        } else if($selectOption == "collector") {
-            header("Location: create_collector.php");
-            exit;
-        } else {
-
-        }
+        header("Location: back_to_home.php");
+        exit;
     }
 ?>
 
@@ -51,15 +36,15 @@
 
                 var i = 0;
 
-                while(formValid==false && i<radios.length) {
-                    if(radios[i].checked == true) {
+                while(formValid===false && i<radios.length) {
+                    if(radios[i].checked === true) {
                         formValid = true;
                     }
 
                     i++;
                 }
 
-                if(formValid == false) {
+                if(formValid === false) {
                     alert("Must check some option!");
                     return false;
                 }

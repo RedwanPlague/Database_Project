@@ -10,7 +10,7 @@
         $password = $_GET["password"];
         //$password = md5($_GET["password"]);  // NOTICE: IMPORTANT
 
-        $query = pg_query($db, "SELECT * FROM doctors");
+        $query = pg_query($db, "SELECT email FROM doctors");
         $matched = false;
 
         /* NOTICE */
@@ -21,14 +21,14 @@
         }
 
         if($matched == false) {
-            pg_query($db, "INSERT INTO doctors(name, email, phone_no, password) VALUES ($name, $email, $phone, $password)");
+            pg_query($db, "INSERT INTO doctors(name, email, phone_no, password) VALUES ('$name', '$email', $phone, '$password')");
 
-            $row = pg_fetch_row(pg_query($db, "SELECT * FROM doctors WHERE email = $email"));
+            $row = pg_fetch_row(pg_query($db, "SELECT doctor_id FROM doctors WHERE email = $email"));
             $id = $row[0];
 
             $_SESSION["id"] = $id;
             $_SESSION["role"] = "doctor";
-            $_SESSION["logged_in"] = set;
+            $_SESSION["logged_in"] = true;
 
             header('Location: doctor_page.php');  // "Location: " is required
             exit;
@@ -69,19 +69,19 @@
                 var password = document.forms["form"]["password"].value;
                 var confirm_password = document.forms["form"]["confirm_password"].value;
 
-                if(name == "") {
+                if(name === "") {
                     alert("name can not be empty");
                     return false;
-                } else if(email == "") {
+                } else if(email === "") {
                     alert("email can not be empty");
                     return false;
-                } else if(phone == "") {
+                } else if(phone === "") {
                     alert("phone number can not be empty");
                     return false;
-                } else if(password == "" || confirm_password == "") {
+                } else if(password === "" || confirm_password === "") {
                     alert("password can not be empty");
                     return false;
-                } else if(password != confirm_password) {
+                } else if(password !== confirm_password) {
                     alert("password mismatched");
                     return false;
                 } else {

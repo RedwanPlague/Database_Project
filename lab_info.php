@@ -1,5 +1,3 @@
-<!-- code from Redwanul Haque -->
-
 <?php
     session_start();
     require 'connection.php';
@@ -9,7 +7,7 @@
     }
 
     if($_SESSION["role"] != "patient") {
-        header("Location: logout.php");
+        header("Location: back_to_home.php");
     }
 
     if(!isset($_GET['id']))
@@ -20,7 +18,9 @@
     if(!$all) {
         $lab_id = $_GET['id'];
 
-        $lab_info = pg_fetch_row(pg_query($db, "SELECT * FROM labs WHERE lab_id = $lab_id"));
+        $lab_info = pg_fetch_row(pg_query($db, "SELECT LB.lab_id, LB.name, LB.email, LB.phone_no,
+                        (SELECT LC.address FROM locations LC WHERE LC.location_id = LB.location_id) location_name
+                        FROM labs LB WHERE LB.lab_id = $lab_id"));
 
         if(!$lab_info)
             header("Location: lab_info.php");
@@ -29,7 +29,7 @@
     function print_lab($lab_row) {
         echo "<a href=\"lab_info.php?id=$lab_row[0]\"> <strong> $lab_row[1] </strong> </a> ";
 
-        for($i=2; $i<4; $i++) {
+        for($i=2; $i<sizeof($lab_row); $i++) {
             // sizeof($lab_row)
             echo " - $lab_row[$i]";
         }
@@ -94,7 +94,7 @@
             <br/>
 
             <p>
-                <input type="button" onclick="window.location = 'back_to_home.php';" name="back" value="back"/>
+                <input type="button" onclick="window.location = 'back_to_home.php';" name="home" value="home"/>
                 <input type="button" onclick="window.location = 'logout.php';" name="logOut" value="log out"/>
             </p>
         </form>

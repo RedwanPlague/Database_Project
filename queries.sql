@@ -19,3 +19,16 @@ WHERE T.test_id IN (SELECT O.test_id FROM offers O WHERE lab_id = 5001);
 SELECT T.test_id, T.name, T.description, T.organ, T.disease, O.charge
 FROM tests T JOIN offers O ON (T.test_id = O.test_id)
 WHERE O.lab_id = 5001;
+
+/* 3 */
+SELECT LB.lab_id, LB.name, LB.email, LB.phone_no,
+       (SELECT LC.address FROM locations LC WHERE LC.location_id = LB.location_id) location_name
+FROM labs LB WHERE LB.lab_id = 5001;
+
+/* 4 */
+SELECT
+       P.name,
+       (SELECT LC.address FROM locations LC WHERE LC.location_id = P.location_id) AS location,
+       D.collection_date
+FROM diagnosis D JOIN patients P ON (D.patient_id = P.patient_id)
+WHERE D.collector_id = 4001;

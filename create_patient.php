@@ -11,25 +11,25 @@
         //$password = md5($_GET["password"]);  // NOTICE: IMPORTANT
         $location_id = $_GET["location"];
 
-        $query = pg_query($db, "SELECT * FROM patients");
+        $query = pg_query($db, "SELECT email FROM patients");
         $matched = false;
 
         /* NOTICE */
         while($matched == false && $row = pg_fetch_row($query)) {
-            if($_GET["email"] == $row[2]) {
+            if($_GET["email"] == $row[0]) {
                 $matched = true;
             }
         }
 
         if($matched == false) {
-            pg_query($db, "INSERT INTO patients(name, email, phone_no, location_id, password) VALUES ($name, $email, $phone, $location_id, $password)");
+            pg_query($db, "INSERT INTO patients(name, email, phone_no, location_id, password) VALUES ('$name', '$email', $phone, $location_id, '$password')");
 
-            $row = pg_fetch_row(pg_query($db, "SELECT * FROM patients WHERE email = $email"));
+            $row = pg_fetch_row(pg_query($db, "SELECT patient_id FROM patients WHERE email = $email"));
             $id = $row[0];
 
             $_SESSION["id"] = $id;
             $_SESSION["role"] = "patient";
-            $_SESSION["logged_in"] = set;
+            $_SESSION["logged_in"] = true;
 
             header('Location: patient_page.php');  // "Location: " is required
             exit;
@@ -86,32 +86,32 @@
 
                 var i = 0;
 
-                while(formValid==false && i<radios.length) {
-                    if(radios[i].checked == true) {
+                while(formValid===false && i<radios.length) {
+                    if(radios[i].checked === true) {
                         formValid = true;
                     }
 
                     i++;
                 }
 
-                if(formValid == false) {
+                if(formValid === false) {
                     alert("Must check some option!");
                     return false;
                 }
 
-                if(name == "") {
+                if(name === "") {
                     alert("name can not be empty");
                     return false;
-                } else if(email == "") {
+                } else if(email === "") {
                     alert("email can not be empty");
                     return false;
-                } else if(phone == "") {
+                } else if(phone === "") {
                     alert("phone number can not be empty");
                     return false;
-                } else if(password == "" || confirm_password == "") {
+                } else if(password === "" || confirm_password === "") {
                     alert("password can not be empty");
                     return false;
-                } else if(password != confirm_password) {
+                } else if(password !== confirm_password) {
                     alert("password mismatched");
                     return false;
                 } else {
