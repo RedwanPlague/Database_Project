@@ -9,7 +9,5 @@
         header("Location: collector_page.php");
     } else if($_SESSION["role"] == "doctor") {
         header("Location: doctor_page.php");
-    } else {
-        // nothing
     }
 ?>

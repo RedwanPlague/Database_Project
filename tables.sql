@@ -100,6 +100,8 @@ CREATE TABLE offers
 
 ALTER TABLE patients ADD COLUMN password varchar(30) DEFAULT '123';
 ALTER TABLE labs ADD COLUMN password varchar(30) DEFAULT '123';
+ALTER TABLE doctors ADD COLUMN password varchar(30) DEFAULT '123';
+ALTER TABLE collectors ADD COLUMN password varchar(30) DEFAULT '123';
 
 CREATE SEQUENCE patient_id_seq
 INCREMENT BY 1

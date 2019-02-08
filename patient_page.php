@@ -7,8 +7,10 @@
     }
 
     if($_SESSION["role"] != "patient") {
-        header("Location: logout.php");
+        header("Location: back_to_home.php");
     }
+
+    $id = $_SESSION["id"];
 ?>
 
 
@@ -18,16 +20,16 @@
     <head>
         <title>
             <?php
-                $id = $_SESSION["id"];
-                $query = pg_query($db, "SELECT * FROM patients WHERE patient_id = $id");
+                $query = pg_query($db, "SELECT name FROM patients WHERE patient_id = $id");
                 $row = pg_fetch_row($query);
 
-                echo $row[1];
+                echo $row[0];
             ?>
         </title>
     </head>
 
     <body>
+
         <form name="form" action="patient_page.php">
             <p> <input type="button" onclick="window.location = 'lab_info.php';" name="visitLab" value="visit lab"/> </p>
             <p> <input type="button" onclick="window.location = 'test_info.php';" name="knowTest" value="know test"/> </p>
@@ -35,6 +37,9 @@
             <br/>
             <p> <input type="button" onclick="window.location = 'logout.php';" name="logOut" value="log out"/> </p>
         </form>
+
+
+
     </body>
 </html>
 

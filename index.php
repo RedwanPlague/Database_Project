@@ -10,32 +10,20 @@
 
         if($db) {
             if($selectOption == "patient") {
-                $query = pg_query($db, "select * from patients");
+                $query = pg_query($db, "select patient_id, email, password from patients");
             } else if($selectOption == "lab admin") {
-                $query = pg_query($db, "select * from labs");
+                $query = pg_query($db, "select lab_id, email, password from labs");
             } else if($selectOption == "collector") {
-                $query = pg_query($db, "select * from collectors");
+                $query = pg_query($db, "select collector_id, email, password from collectors");
             } else if($selectOption == "doctor") {
-                $query = pg_query($db, "select * from doctors");
-            } else {
-                /* problem */
+                $query = pg_query($db, "select doctor_id, email, password from doctors");
             }
 
             $id = -1;
             $found = false;
 
             while($found != true && $row = pg_fetch_row($query)) {
-                if(($selectOption == "patient" || $selectOption == "lab admin") && $email == $row[2] && $password == $row[5]) {
-                    $id = $row[0];
-                    $found = true;
-                }
-
-                if(($selectOption == "doctor") && $email == $row[2] && $password == $row[4]) {
-                    $id = $row[0];
-                    $found = true;
-                }
-
-                if(($selectOption == "collector") && $email == $row[3] && $password == $row[5]) {
+                if($email == $row[1] && $password == $row[2]) {
                     $id = $row[0];
                     $found = true;
                 }
@@ -44,38 +32,11 @@
             pg_close($db);
 
             if($found == true) {
-                if($selectOption == "patient") {
-                    $_SESSION["id"] = $id;
-                    $_SESSION["role"] = "patient";
-                    $_SESSION["logged_in"] = set;
-
-                    header('Location: patient_page.php');  // "Location: " is required
-                    exit;
-                } else if($selectOption == "lab admin") {
-                    $_SESSION["id"] = $id;
-                    $_SESSION["role"] = "lab admin";
-                    $_SESSION["logged_in"] = set;
-
-                    header('Location: lab_admin_page.php');  // "Location: " is required
-                    exit;
-                } else if($selectOption == "collector") {
-                    $_SESSION["id"] = $id;
-                    $_SESSION["role"] = "collector";
-                    $_SESSION["logged_in"] = set;
-
-                    header('Location: collector_page.php');  // "Location: " is required
-                    exit;
-                } else if($selectOption == "doctor") {
-                    $_SESSION["id"] = $id;
-                    $_SESSION["role"] = "doctor";
-                    $_SESSION["logged_in"] = set;
-
-                    header('Location: doctor_page.php');  // "Location: " is required
-                    exit;
-                } else {
-                    // nothing
-                }
-
+                $_SESSION["id"] = $id;
+                $_SESSION["role"] = $selectOption;
+                $_SESSION["logged_in"] = true;
+                header("Location: back_to_home.php");
+                exit;
             }
 
             if($found == false) {
@@ -126,27 +87,25 @@
 
                 var i = 0;
 
-                while(formValid==false && i<radios.length) {
-                    if(radios[i].checked == true) {
+                while(!formValid && i<radios.length) {
+                    if(radios[i].checked) {
                         formValid = true;
                     }
 
                     i++;
                 }
 
-                if(formValid == false) {
+                if(!formValid) {
                     alert("Must check some option!");
                     return false;
                 }
 
-                if(email == "") {
+                if(email === "") {
                     alert("email can not be empty");
                     return false;
-                } else if(password == "") {
+                } else if(password === "") {
                     alert("password can not be empty");
                     return false;
-                } else {
-                    // nothing
                 }
 
                 return true;

@@ -35,14 +35,14 @@
         }
     }
 
-    function print_test($test_row, $cost) {
+    function print_test($test_row) {
         echo "<a href=\"test_info.php?id=$test_row[0]\"> <strong> $test_row[1] </strong> </a> ";
 
-        for($i=1; $i<5; $i++) {
-            echo "   $test_row[$i]";
+        for($i=2; $i<sizeof($test_row)-1; $i++) {
+            echo " - $test_row[$i]";
         }
 
-        echo "   (charges: tk.".$cost.")";
+        echo " - (charges: tk.".$test_row[sizeof($test_row)-1].")";
     }
 ?>
 
@@ -80,13 +80,12 @@
 
                 echo "<p> <strong> Tests offered by this lab: </strong> </p>";
 
-                $result = pg_query($db, "SELECT * FROM tests WHERE test_id IN (SELECT test_id FROM offers WHERE lab_id = $lab_id)");
+                $result = pg_query($db, "SELECT T.test_id, T.name, T.description, T.organ, T.disease, O.charge
+                            FROM tests T JOIN offers O ON (T.test_id = O.test_id)
+                            WHERE O.lab_id = $lab_id");
 
                 while($row = pg_fetch_row($result)) {
-                    $temp = pg_fetch_row(pg_query($db, "SELECT * FROM offers WHERE test_id = $row[0] AND lab_id = $lab_info[0]"));
-                    $cost = $temp[2];
-
-                    echo "<p>".print_test($row, $cost)."</p>";
+                    echo "<p>".print_test($row)."</p>";
                 }
             }
         ?>
