@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION match(sa varchar(30), sb varchar(30))
+CREATE OR REPLACE FUNCTION lcs(sa varchar(30), sb varchar(30))
 RETURNS numeric
 AS $$
 DECLARE
@@ -8,6 +8,8 @@ DECLARE
     lcs integer[1000];
 BEGIN
 
+    sa := lower(sa);
+    sb := lower(sb);
     la := length(sa);
     lb := length(sb);
 
@@ -39,7 +41,7 @@ BEGIN
         end loop;
     end loop;
 
-    return (lcs[mxlen*la+lb] / la) * 100;
+    return lcs[mxlen*la+lb];
 
 END ;
 $$ LANGUAGE plpgsql;

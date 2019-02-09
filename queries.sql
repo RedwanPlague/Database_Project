@@ -32,3 +32,14 @@ SELECT
        D.collection_date
 FROM diagnosis D JOIN patients P ON (D.patient_id = P.patient_id)
 WHERE D.collector_id = 4001;
+
+/* 5 */
+SELECT
+    (SELECT L.name FROM labs L WHERE L.lab_id = (SELECT D.lab_id FROM diagnosis D WHERE D.diagnosis_id = S.diagnosis_id)),
+    (SELECT T.name FROM tests T WHERE T.test_id = S.test_id),
+    S.issue_time,
+    R.content
+FROM reports R JOIN samples S ON (R.report_id = S.report_id)
+WHERE S.done AND S.diagnosis_id IN
+                 (SELECT D.diagnosis_id FROM diagnosis D WHERE D.patient_id = 1001)
+ORDER BY S.issue_time DESC ;
