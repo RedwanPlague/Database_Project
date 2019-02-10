@@ -120,7 +120,7 @@
                     while($row = pg_fetch_row($result)) {
                         echo "<p>";
                         print_test($row);
-                        echo "</p>";  // IMPORTANT
+                        echo "<a href=\"test_info.php?id=$row[0]\">Book</a> </p>";  // IMPORTANT
                     }
                 }
             }
@@ -138,11 +138,32 @@
                             FROM labs LB JOIN offers O ON (LB.lab_id = O.lab_id)
                             WHERE O.test_id = $test_id");
 
+                echo "<form id='book' action='book_test.php' method='get'><input id='lab' hidden><input id='test' hidden>";
+                $cnt = 0;
                 while($row = pg_fetch_row($result)) {
-                    echo "<p>";
+                    echo "<p id=\"p$cnt\">";
                     print_lab($row);
-                    echo "</p>";
+                    echo "<a onclick='add_date($cnt)' href='#'>Book</a></p>";
+                    $cnt++;
                 }
+                echo "</form>";
+                echo "<script> 
+                    function add_date(cnt) {
+                        let date = document.createElement('input');
+                        date.type = 'date';
+                        let submit = document.createElement('input');
+                        submit.type = 'submit';
+                        submit.value = 'Submit';
+                        submit.onclick = function() {
+                            document.getElementById('lab').value = $row[0];
+                            document.getElementById('test_id').value = $test_id;
+                            document.getElementById('book').submit();
+                        };
+                        let para = document.getElementById('p'+cnt);
+                        para.appendChild(date);
+                        para.appendChild(submit);
+                    }
+                </script>";
             }
         ?>
 
