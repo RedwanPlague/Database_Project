@@ -43,3 +43,13 @@ FROM reports R JOIN samples S ON (R.report_id = S.report_id)
 WHERE S.done AND S.diagnosis_id IN
                  (SELECT D.diagnosis_id FROM diagnosis D WHERE D.patient_id = 1001)
 ORDER BY S.issue_time DESC ;
+
+/* 6 */
+SELECT
+    (SELECT P.name FROM patients P WHERE P.patient_id = D.patient_id),
+    (SELECT LC.address FROM locations LC WHERE location_id = (SELECT P.location_id FROM patients P WHERE P.patient_id = D.patient_id)),
+    (SELECT T.name FROM tests T WHERE T.test_id = S.test_id),
+    S.issue_time
+FROM samples S JOIN diagnosis D ON S.diagnosis_id = D.diagnosis_id
+WHERE D.collector_id = 4001 AND NOT S.collected
+ORDER BY S.issue_time DESC ;

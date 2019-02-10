@@ -12,6 +12,8 @@ ALTER TABLE reports ALTER report_id SET DEFAULT nextval('report_id_seq');
 ALTER TABLE prescriptions ALTER prescription_id SET DEFAULT nextval('prescription_id_seq');
 
 ALTER TABLE samples ADD UNIQUE (report_id);
+ALTER TABLE tests ADD UNIQUE(name);
+ALTER TABLE samples ADD collected boolean ;
 
 ALTER TABLE doctors ADD COLUMN password varchar(30) DEFAULT '123';
 ALTER TABLE collectors ADD COLUMN password varchar(30) DEFAULT '123';

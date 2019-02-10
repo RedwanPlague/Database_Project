@@ -97,7 +97,9 @@
                                                     WHERE T.test_id IN (SELECT O.test_id FROM offers O WHERE O.lab_id = $lab_id )".$add);
 
                     while($row = pg_fetch_row($result)) {
-                        echo "<p>".print_our_test($row)."</p>";  // IMPORTANT
+                        echo "<p>";
+                        print_our_test($row);
+                        echo "</p>";  // IMPORTANT
                     }
 
                     echo "<br><p> <h2> Other Tests: </h2> </p>";
@@ -105,23 +107,29 @@
                                                     WHERE T.test_id NOT IN (SELECT O.test_id FROM offers O WHERE O.lab_id = $lab_id )".$add);
 
                     while($row = pg_fetch_row($result)) {
-                        echo "<p>".print_test($row)."</p>";  // IMPORTANT
+                        echo "<p>";
+                        print_test($row);
+                        echo "</p>";  // IMPORTANT
                     }
                 }
-                else {
+                else if($_SESSION['role'] == 'patient') {
                     echo "<p> <h2> Tests: </h2> </p>";
 
                     $result = pg_query($db, "SELECT T.test_id, T.name, T.description, T.organ, T.disease FROM tests T".$add);
 
                     while($row = pg_fetch_row($result)) {
-                        echo "<p>".print_test($row)."</p>";  // IMPORTANT
+                        echo "<p>";
+                        print_test($row);
+                        echo "</p>";  // IMPORTANT
                     }
                 }
             }
             else {
                 echo "<p> <strong> Test: </strong> </p>";
 
-                echo "<p>".print_test($test_info)."</p> <br/>";
+                echo "<p>";
+                print_test($test_info);
+                echo "</p> <br/>";
 
                 echo "<p> <strong> Labs that offer this test: </strong> </p>";
 
@@ -131,7 +139,9 @@
                             WHERE O.test_id = $test_id");
 
                 while($row = pg_fetch_row($result)) {
-                    echo "<p>".print_lab($row)."</p>";
+                    echo "<p>";
+                    print_lab($row);
+                    echo "</p>";
                 }
             }
         ?>

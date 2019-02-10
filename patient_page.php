@@ -36,8 +36,7 @@
 
         <form name="form" action="patient_page.php">
             <p> <input type="button" onclick="window.location = 'lab_info.php';" name="visitLab" value="visit lab"/> </p>
-            <p> <input type="button" onclick="window.location = 'test_info.php';" name="knowTest" value="know test"/> </p>
-            <p> <input type="button" onclick="window.location = 'patient_page.php';" name="bookTest" value="book test"/> </p>
+            <p> <input type="button" onclick="window.location = 'test_info.php';" name="bookTest" value="book test"/> </p>
             <p> <input type="button" onclick="window.location = 'patient_page.php?which=1';" name="patientBookings" value="See Previous Bookings"/> </p>
             <br/>
             <p> <input type="button" onclick="window.location = 'logout.php';" name="logOut" value="log out"/> </p>

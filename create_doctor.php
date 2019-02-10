@@ -1,4 +1,6 @@
 <?php
+    session_start();
+
     require "connection.php";
 
     if(isset($_GET["name"]) && isset($_GET["email"]) && isset($_GET["phone"]) && isset($_GET["password"]) && isset($_GET["confirm_password"])) {
