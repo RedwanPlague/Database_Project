@@ -40,10 +40,10 @@
                            (SELECT P.name FROM patients P WHERE P.patient_id = D.patient_id),
                            (SELECT LC.address FROM locations LC WHERE location_id = (SELECT P.location_id FROM patients P WHERE P.patient_id = D.patient_id)),
                            (SELECT T.name FROM tests T WHERE T.test_id = S.test_id),
-                           S.issue_time
+                           D.collection_date
                         FROM samples S JOIN diagnosis D ON S.diagnosis_id = D.diagnosis_id
                         WHERE D.collector_id = $collector_id AND NOT S.collected
-                        ORDER BY S.issue_time DESC");
+                        ORDER BY D.collection_date DESC");
             echo "<ul>Your Upcoming Jobs: ";
             while($row = pg_fetch_row($query)) {
                 echo "<li>$row[2] - $row[3] - $row[4] - $row[5] - <a href=\"collected.php?dig=$row[0]&test=$row[1]\">Collected</a> </li>";
@@ -54,10 +54,10 @@
                            (SELECT P.name FROM patients P WHERE P.patient_id = D.patient_id),
                            (SELECT LC.address FROM locations LC WHERE location_id = (SELECT P.location_id FROM patients P WHERE P.patient_id = D.patient_id)),
                            (SELECT T.name FROM tests T WHERE T.test_id = S.test_id),
-                           S.issue_time
+                           D.collection_date
                         FROM samples S JOIN diagnosis D ON S.diagnosis_id = D.diagnosis_id
                         WHERE D.collector_id = $collector_id AND S.collected 
-                        ORDER BY S.issue_time DESC");
+                        ORDER BY D.collection_date DESC");
             echo "<ul>Your Completed Jobs: ";
             while($row = pg_fetch_row($query)) {
                 echo "<li>$row[0] - $row[1] - $row[2] - $row[3]</li>";

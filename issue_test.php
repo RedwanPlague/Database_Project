@@ -15,7 +15,7 @@
     $patient_id = $_GET['patient'];
     $test_id = $_GET['test'];
 
-    $result = pg_query($db,"CALL issue_test($doctor_id,$patient_id,$test_id)");
+    $result = pg_query($db,"SELECT issue_test($doctor_id,$patient_id,$test_id)");
 
     pg_close($db);
 

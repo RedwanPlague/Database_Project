@@ -11,7 +11,6 @@
     }
 ?>
 
-
 <!DOCTYPE html>
 
 <html lang="en">
@@ -31,6 +30,7 @@
         <form name="form" action="lab_admin_page.php">
             <p> <input type="button" onclick="window.location = 'collector_info.php';" name="collectorInfo" value="collector info"/> </p>
             <p> <input type="button" onclick="window.location = 'sample_info.php';" name="sampleInfo" value="sample info"/> </p>
+            <p> <input type="button" onclick="window.location = 'test_info.php';" name="testInfo" value="test info"/> </p>
             <br/>
             <p> <input type="button" onclick="window.location = 'logout.php';" name="logOut" value="log out"/> </p>
         </form>

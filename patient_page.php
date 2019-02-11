@@ -38,6 +38,7 @@
             <p> <input type="button" onclick="window.location = 'lab_info.php';" name="visitLab" value="visit lab"/> </p>
             <p> <input type="button" onclick="window.location = 'test_info.php';" name="bookTest" value="book test"/> </p>
             <p> <input type="button" onclick="window.location = 'patient_page.php?which=1';" name="patientBookings" value="See Previous Bookings"/> </p>
+            <p> <input type="button" onclick="window.location = 'patient_page.php?which=2';" name="testIssues" value="See Issued Tests"/> </p>
             <br/>
             <p> <input type="button" onclick="window.location = 'logout.php';" name="logOut" value="log out"/> </p>
         </form>
@@ -46,22 +47,22 @@
             if($which == 1) {
                 show_prev_history($id);
             }
-            else {
-                show_book_test();
+            else if($which == 2) {
+                show_issued_test($id);
             }
 
             function show_prev_history($id) {
                 echo "<br><ul>Your Previous Finished Tests:";
 
                 $query = pg_query("SELECT 
-                    (SELECT L.name FROM labs L WHERE L.lab_id = (SELECT D.lab_id FROM diagnosis D WHERE D.diagnosis_id = S.diagnosis_id)), 
+                    (SELECT L.name FROM labs L WHERE L.lab_id = D.lab_id), 
                     (SELECT T.name FROM tests T WHERE T.test_id = S.test_id),
-                    S.issue_time,
+                    D.collection_date,
                     (SELECT R.content FROM reports R WHERE R.report_id = S.report_id)
-                    FROM samples S 
+                    FROM samples S JOIN diagnosis D ON S.diagnosis_id = D.diagnosis_id
                     WHERE S.diagnosis_id IN 
                         (SELECT D.diagnosis_id FROM diagnosis D WHERE D.patient_id = $id )
-                    ORDER BY S.issue_time DESC ");
+                    ORDER BY D.collection_date DESC ");
 
                 while($row = pg_fetch_row($query)) {
                     echo "<li>$row[0] - $row[1] - $row[2] - ";
@@ -76,8 +77,21 @@
                 echo "</ul>";
             }
 
-            function show_book_test() {
+            function show_issued_test($id) {
+                echo "<br><ul>The tests issued for you:";
 
+                $query = pg_query("SELECT 
+                                    I.test_id,
+                                    (SELECT T.name FROM tests T WHERE T.test_id = I.test_id),
+                                    (SELECT D.name FROM doctors D WHERE D.doctor_id = P.doctor_id)
+                                    FROM issued I JOIN prescriptions P ON I.prescription_id = P.prescription_id
+                                    WHERE P.patient_id = $id ");
+
+                while($row = pg_fetch_row($query)) {
+                    echo "<li>$row[2] - <a href=\"test_info.php?id=$row[0]\">$row[1]</a></li>";
+                }
+
+                echo "</ul>";
             }
 
         ?>

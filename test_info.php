@@ -25,7 +25,7 @@
 
         for($i=2; $i<sizeof($test_row); $i++) {
             // sizeof($test_row)
-            echo " - $test_row[$i]";
+            echo " - $test_row[$i] ";
         }
     }
 
@@ -37,7 +37,7 @@
             echo " - $test_row[$i]";
         }
 
-        echo " - (we charge ".$test_row[sizeof($test_row)-1]." tk for this test)";
+        echo " - (we charge ".$test_row[sizeof($test_row)-1]." tk for this test) ";
     }
 
     function print_lab($lab_row) {
@@ -47,7 +47,7 @@
             echo " - $lab_row[$i]";
         }
 
-        echo " - (charges: tk.".$lab_row[sizeof($lab_row)-1].")";
+        echo " - (charges: tk.".$lab_row[sizeof($lab_row)-1].") ";
     }
 ?>
 
@@ -70,15 +70,27 @@
 
         <form action="test_info.php" method="get">
             <label for="search">Search For Test: </label>
-            <input id="search" type="text" name="search">
+            <input id="search" type="text">
+            <label for="how">Search by:</label>
+            <select id="how" name="search">
+                <option name="name" value="name">Name</option>
+                <option name="organ" value="organ">Organ</option>
+                <option name="disease" value="disease">Disease</option>
+            </select>
             <input type="submit" value="Search">
         </form>
 
         <?php
             if($all) {
                 $add = "";
-                if(isset($_GET['search'])) {
-                    $add = " ORDER BY lcs(T.name,'".$_GET['search']."') DESC";
+                if(isset($_GET['name'])) {
+                    $add = " ORDER BY lcs(T.name,'".$_GET['name']."') DESC";
+                }
+                else if(isset($_GET['organ'])) {
+                    $add = " ORDER BY lcs(T.organ,'".$_GET['organ']."') DESC";
+                }
+                else if(isset($_GET['disease'])) {
+                    $add = " ORDER BY lcs(T.disease,'".$_GET['disease']."') DESC";
                 }
                 if($_SESSION['role'] == 'lab admin' || $_SESSION['role'] == 'collector') {
 
@@ -138,18 +150,28 @@
                             FROM labs LB JOIN offers O ON (LB.lab_id = O.lab_id)
                             WHERE O.test_id = $test_id");
 
-                echo "<form id='book' action='book_test.php' method='get'><input id='lab' hidden><input id='test' hidden>";
-                $cnt = 0;
-                while($row = pg_fetch_row($result)) {
-                    echo "<p id=\"p$cnt\">";
-                    print_lab($row);
-                    echo "<a onclick='add_date($cnt)' href='#'>Book</a></p>";
-                    $cnt++;
+                if($_SESSION['role'] == 'patient') {
+                    echo "<form id='book' action='book_test.php' method='get'><input id='lab' name='lab' hidden><input id='test' name='test' hidden>";
+                    echo "<input type='date' name='date'>";
                 }
-                echo "</form>";
-                echo "<script> 
-                    function add_date(cnt) {
-                        let date = document.createElement('input');
+                //$cnt = 0;
+                while($row = pg_fetch_row($result)) {
+                    //echo "<p id=\"p$cnt\">";
+                    echo "<p>";
+                    print_lab($row);
+                    //echo "<a onclick=\"add_date($row[0],$test_id)\" href='#'>Book</a></p>";
+                    if($_SESSION['role'] == 'patient') {
+                        echo "<a onclick=\"add_date($row[0],$test_id)\" href='#'>Book</a></p>";
+                    }
+
+                    //$cnt++;
+                }
+                if($_SESSION['role'] == 'patient') {
+
+                    echo "</form>";
+                    echo "<script> 
+                    function add_date(lab,test) {
+                        /*let date = document.createElement('input');
                         date.type = 'date';
                         let submit = document.createElement('input');
                         submit.type = 'submit';
@@ -161,9 +183,13 @@
                         };
                         let para = document.getElementById('p'+cnt);
                         para.appendChild(date);
-                        para.appendChild(submit);
+                        para.appendChild(submit);*/
+                        document.getElementById('lab').value = lab;
+                        document.getElementById('test').value = test;
+                        document.getElementById('book').submit();
                     }
-                </script>";
+                    </script>";
+                }
             }
         ?>
 
