@@ -19,14 +19,14 @@ END;
 $$ LANGUAGE plpgsql;
 
 CREATE OR REPLACE FUNCTION book_test(IN patient integer, IN lab integer, IN test integer, IN isu_date varchar(20))
-    RETURNS void
+RETURNS void
 AS $$
 DECLARE
     diagnosis_id integer;
     is_date date;
 BEGIN
 
-    is_date := to_date(isu_date, 'YYYYY-MM-DD');
+    is_date := to_date(isu_date, 'YYYY-MM-DD');
 
     if not exists(SELECT D.diagnosis_id
                   FROM diagnosis D
@@ -35,7 +35,9 @@ BEGIN
 
     end if;
 
-    SELECT last_value INTO diagnosis_id FROM diagnosis_id_seq;
+    SELECT D.diagnosis_id INTO diagnosis_id
+    FROM diagnosis D
+    WHERE D.patient_id = patient AND D.lab_id = lab AND D.collection_date = is_date;
 
     INSERT INTO samples VALUES (diagnosis_id, test, false, null, false);
 

@@ -5,11 +5,19 @@ DECLARE
     mxlen integer := 30;
     la integer;
     lb integer;
-    lcs integer[1000];
+    lcs integer[10];
 BEGIN
 
-    sa := lower(sa);
-    sb := lower(sb);
+    if(sa IS NULL) then
+        sa := "";
+    else
+        sa := lower(sa);
+    end if;
+    if(sb IS NULL) then
+        sb := "";
+    else
+        sb := lower(sb);
+    end if;
     la := length(sa);
     lb := length(sb);
 

@@ -70,9 +70,9 @@
 
         <form action="test_info.php" method="get">
             <label for="search">Search For Test: </label>
-            <input id="search" type="text">
+            <input id="search" type="text" name="search">
             <label for="how">Search by:</label>
-            <select id="how" name="search">
+            <select id="how" name="by">
                 <option name="name" value="name">Name</option>
                 <option name="organ" value="organ">Organ</option>
                 <option name="disease" value="disease">Disease</option>
@@ -83,14 +83,10 @@
         <?php
             if($all) {
                 $add = "";
-                if(isset($_GET['name'])) {
-                    $add = " ORDER BY lcs(T.name,'".$_GET['name']."') DESC";
-                }
-                else if(isset($_GET['organ'])) {
-                    $add = " ORDER BY lcs(T.organ,'".$_GET['organ']."') DESC";
-                }
-                else if(isset($_GET['disease'])) {
-                    $add = " ORDER BY lcs(T.disease,'".$_GET['disease']."') DESC";
+                if(isset($_GET['search']) && isset($_GET['by'])) {
+                    $search = $_GET['search'];
+                    $by = $_GET['by'];
+                    $add = " ORDER BY lcs(T.$by,'$search') DESC";
                 }
                 if($_SESSION['role'] == 'lab admin' || $_SESSION['role'] == 'collector') {
 
@@ -111,7 +107,7 @@
                     while($row = pg_fetch_row($result)) {
                         echo "<p>";
                         print_our_test($row);
-                        echo "</p>";  // IMPORTANT
+                        echo "<a href=\"change_charge.php?id=$row[0]\">Change Charge</a> </p>";  // IMPORTANT
                     }
 
                     echo "<br><p> <h2> Other Tests: </h2> </p>";
@@ -154,36 +150,18 @@
                     echo "<form id='book' action='book_test.php' method='get'><input id='lab' name='lab' hidden><input id='test' name='test' hidden>";
                     echo "<input type='date' name='date'>";
                 }
-                //$cnt = 0;
+
                 while($row = pg_fetch_row($result)) {
-                    //echo "<p id=\"p$cnt\">";
                     echo "<p>";
                     print_lab($row);
-                    //echo "<a onclick=\"add_date($row[0],$test_id)\" href='#'>Book</a></p>";
                     if($_SESSION['role'] == 'patient') {
                         echo "<a onclick=\"add_date($row[0],$test_id)\" href='#'>Book</a></p>";
                     }
-
-                    //$cnt++;
                 }
                 if($_SESSION['role'] == 'patient') {
-
                     echo "</form>";
                     echo "<script> 
                     function add_date(lab,test) {
-                        /*let date = document.createElement('input');
-                        date.type = 'date';
-                        let submit = document.createElement('input');
-                        submit.type = 'submit';
-                        submit.value = 'Submit';
-                        submit.onclick = function() {
-                            document.getElementById('lab').value = $row[0];
-                            document.getElementById('test_id').value = $test_id;
-                            document.getElementById('book').submit();
-                        };
-                        let para = document.getElementById('p'+cnt);
-                        para.appendChild(date);
-                        para.appendChild(submit);*/
                         document.getElementById('lab').value = lab;
                         document.getElementById('test').value = test;
                         document.getElementById('book').submit();

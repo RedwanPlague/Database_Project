@@ -115,6 +115,22 @@
 
         </script>
 
+        <?php
+
+            echo "<br><br><ul>Tests issued by you:";
+            $query = pg_query("SELECT
+                            (SELECT (P.name, P.email) FROM patients P WHERE P.patient_id = Pr.patient_id),
+                            (SELECT T.name FROM tests T WHERE T.test_id = I.test_id),
+                            I.issue_date 
+                        FROM prescriptions Pr JOIN issued I ON Pr.prescription_id = I.prescription_id
+                        WHERE Pr.doctor_id = $id ORDER BY I.issue_date DESC ");
+            while($row = pg_fetch_row($query)) {
+                echo "<li>$row[0] - $row[1] - $row[2]</li>";
+            }
+            echo "</ul>";
+
+        ?>
+
     </body>
 </html>
 

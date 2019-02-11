@@ -1,1 +1,4 @@
-0
+2) package handle
+5) add statistics - i) collector, ii) test
+6) encrypt password
+7)
