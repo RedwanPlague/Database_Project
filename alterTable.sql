@@ -15,3 +15,6 @@ ALTER TABLE samples ADD UNIQUE (report_id);
 
 ALTER TABLE doctors ADD COLUMN password varchar(30) DEFAULT '123';
 ALTER TABLE collectors ADD COLUMN password varchar(30) DEFAULT '123';
+
+ALTER TABLE tests ADD UNIQUE(name);
+ALTER TABLE samples ADD collected boolean ;

@@ -1,6 +1,5 @@
 <?php
     session_start();
-    require "connection.php";
 
     if(isset($_SESSION['logged_in']) == false) {
         header("Location: index.php");
@@ -9,6 +8,8 @@
     if($_SESSION["role"] != "patient") {
         header("Location: logout.php");
     }
+
+    require "connection.php";
 ?>
 
 <!DOCTYPE html>

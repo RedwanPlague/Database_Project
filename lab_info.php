@@ -2,7 +2,6 @@
 
 <?php
     session_start();
-    require 'connection.php';
 
     if(isset($_SESSION['logged_in']) == false) {
         header("Location: index.php");
@@ -12,6 +11,8 @@
         header("Location: logout.php");
     }
 
+    require 'connection.php';
+
     if(!isset($_GET['id']))
         $all = true;
     else
@@ -20,7 +21,9 @@
     if(!$all) {
         $lab_id = $_GET['id'];
 
-        $lab_info = pg_fetch_row(pg_query($db, "SELECT * FROM labs WHERE lab_id = $lab_id"));
+        $lab_info = pg_fetch_row(pg_query($db, "SELECT LB.lab_id, LB.name, LB.email, LB.phone_no,
+                            (SELECT LC.address FROM locations LC WHERE LC.location_id = LB.location_id) location_name
+                            FROM labs LB WHERE LB.lab_id = $lab_id"));
 
         if(!$lab_info)
             header("Location: lab_info.php");
@@ -45,8 +48,6 @@
         echo "   (charges: tk.".$cost.")";
     }
 ?>
-
-
 
 
 <!DOCTYPE html>

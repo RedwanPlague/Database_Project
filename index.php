@@ -83,8 +83,7 @@
                 exit;
             }
         }
-    }
-?>
+    }?>
 
 
 <!DOCTYPE html>
@@ -94,12 +93,11 @@
         <title> welcome ! </title>
     </head>
 
+    <!-- NOTICE below -->
     <body>
         <form name="form" action="index.php" method="get" onsubmit="return validate()">
-            <p>
-                <strong> <label for="email"> email: </label> </strong> <input id="email" type="text" name="email"/>
-                <strong> <label for="password"> password: </label> </strong> <input id="password" type="password" name="password"/>
-            </p>
+            <p> <strong> <label for="email"> email: </label> </strong> <input id="email" type="text" name="email"/> </p>
+            <p> <strong> <label for="password"> password: </label> </strong> <input id="password" type="password" name="password"/> </p>
 
             <p>
                 <strong> login as: </strong> <br/>
@@ -109,11 +107,11 @@
                 <strong> <label for="doctor"> doctor: </label> </strong> <input id="doctor" type="radio" name="role" value="doctor"/>
             </p>
 
+            <p> <input type="submit" name="submit" value="log in"> </p>
 
-            <p>
-                <input type="submit" name="submit" value="log in">
-                <input type="button" onclick="window.location = 'create_account.php';" name="create_account" value="create account"/>
-            </p>
+            <p> <input type="button" onclick="window.location = 'create_account.php';" name="create_account" value="create account"/> </p>
+            <p> <input type="button" onclick="window.location = 'credit.php';" name="credit" value="credits"/> </p>
+
         </form>
 
         <script language="javascript" type="text/javascript">

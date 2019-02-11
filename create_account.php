@@ -11,9 +11,6 @@
         } else if($selectOption == "doctor") {
             header("Location: create_doctor.php");
             exit;
-        } else if($selectOption == "collector") {
-            header("Location: create_collector.php");
-            exit;
         } else {
 
         }
@@ -34,7 +31,6 @@
                 <strong> create account as: </strong> <br/>
                 <strong> <label for="patient"> patient: </label> </strong> <input id="patient" type="radio" name="role" value="patient"/> <br/>
                 <strong> <label for="lab admin"> lab admin: </label> </strong> <input id="lab admin" type="radio" name="role" value="lab admin"/> <br/>
-                <strong> <label for="collector"> collector: </label> </strong> <input id="collector" type="radio" name="role" value="collector"/> <br/>
                 <strong> <label for="doctor"> doctor: </label> </strong> <input id="doctor" type="radio" name="role" value="doctor"/>
             </p>
 
