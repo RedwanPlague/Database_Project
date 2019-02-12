@@ -30,6 +30,7 @@
 
     <body>
         <form name="form" action="collector_page.php">
+            <p> <input type="button" onclick="window.location = 'statistics.php';" name="statistics" value="See Statistics"/> </p>
             <p> <input type="button" onclick="window.location = 'logout.php';" name="logOut" value="log out"/> </p>
         </form>
 

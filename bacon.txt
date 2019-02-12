@@ -1,4 +1,3 @@
 2) package handle
-5) add statistics - i) collector, ii) test
-6) encrypt password
 7) add trigger to find already booked tests in patient
+8) add trigger to decrease charge of most booked test

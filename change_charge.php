@@ -13,7 +13,7 @@
 
     $lab_id = $_SESSION['id'];
     $test_id = $_GET['id'];
-    $query = pg_query("SELECT T.test_id, T.name, T.description, T.organ, T.disease, 
+    $query = pg_query("SELECT T.name, T.description, T.organ, T.disease, 
                                 (SELECT O.charge FROM offers O WHERE O.test_id = T.test_id AND O.lab_id = $lab_id)
                                 FROM tests T 
                                 WHERE T.test_id = $test_id");
@@ -41,7 +41,7 @@
 
         <?php
             $row = pg_fetch_row($query);
-            echo "<p><h2>$row[1]</h2><br>$row[2] - $row[3] - $row[4] - charge : $row[5]</p><br>";
+            echo "<p><h2>$row[0]</h2><br>$row[1] - $row[2] - $row[3] - charge : $row[4]</p><br>";
         ?>
 
         <form action="change_charge.php" method="get">
