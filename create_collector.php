@@ -14,11 +14,11 @@
     if(isset($_GET["name"]) && isset($_GET["email"]) && isset($_GET["phone"]) && isset($_GET["password"]) && isset($_GET["confirm_password"])) {
         /* MAY BE, PROCEDURE WILL BE ADDED HERE LATER */
 
-        $name = $_GET["name"];
-        $email = $_GET["email"];
-        $phone = $_GET["phone"];
+        $name = pg_escape_string($_GET["name"]);
+        $email = pg_escape_string($_GET["email"]);
+        $phone = pg_escape_string($_GET["phone"]);
         $password = $_GET["password"];
-        //$password = md5($_GET["password"]);  // NOTICE: IMPORTANT
+        $encrypted = pg_escape_string(password_hash($password, PASSWORD_DEFAULT));  // NOTICE: IMPORTANT
 
         $query = pg_query($db, "SELECT * FROM collectors");
         $matched = false;
@@ -32,7 +32,10 @@
 
         if($matched == false) {
             $id = $_SESSION["id"];
-            pg_query($db, "INSERT INTO collectors(lab_id, name, email, phone_no, password) VALUES ($id, $name, $email, $phone, $password)");
+            $result = pg_query($db, "INSERT INTO collectors(lab_id, name, email, phone_no, password) VALUES ('$id', '$name', '$email', '$phone', '$encrypted')");
+
+            header('Location: lab_admin_page.php');  // "Location: " is required
+            exit;
         }
 
         if($matched == true) {

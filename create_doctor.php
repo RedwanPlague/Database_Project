@@ -1,14 +1,15 @@
 <?php
+    session_start();
     require "connection.php";
 
     if(isset($_GET["name"]) && isset($_GET["email"]) && isset($_GET["phone"]) && isset($_GET["password"]) && isset($_GET["confirm_password"])) {
         /* MAY BE, PROCEDURE WILL BE ADDED HERE LATER */
 
-        $name = $_GET["name"];
-        $email = $_GET["email"];
-        $phone = $_GET["phone"];
+        $name = pg_escape_string($_GET["name"]);
+        $email = pg_escape_string($_GET["email"]);
+        $phone = pg_escape_string($_GET["phone"]);
         $password = $_GET["password"];
-        //$password = md5($_GET["password"]);  // NOTICE: IMPORTANT
+        $encrypted = pg_escape_string(password_hash($password, PASSWORD_DEFAULT));  // NOTICE: IMPORTANT
 
         $query = pg_query($db, "SELECT * FROM doctors");
         $matched = false;
@@ -21,9 +22,9 @@
         }
 
         if($matched == false) {
-            pg_query($db, "INSERT INTO doctors(name, email, phone_no, password) VALUES ($name, $email, $phone, $password)");
+            $result = pg_query($db, "INSERT INTO doctors(name, email, phone_no, password) VALUES ('$name', '$email', '$phone', '$encrypted')");
 
-            $row = pg_fetch_row(pg_query($db, "SELECT * FROM doctors WHERE email = $email"));
+            $row = pg_fetch_row(pg_query($db, "SELECT * FROM doctors WHERE email = '$email'"));
             $id = $row[0];
 
             $_SESSION["id"] = $id;

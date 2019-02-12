@@ -1,15 +1,16 @@
 <?php
+    session_start();
     require "connection.php";
 
     if(isset($_GET["name"]) && isset($_GET["email"]) && isset($_GET["phone"]) && isset($_GET["password"]) && isset($_GET["confirm_password"])) {
         /* MAY BE, PROCEDURE WILL BE ADDED HERE LATER */
 
-        $name = $_GET["name"];
-        $email = $_GET["email"];
-        $phone = $_GET["phone"];
+        $name = pg_escape_string($_GET["name"]);
+        $email = pg_escape_string($_GET["email"]);
+        $phone = pg_escape_string($_GET["phone"]);
         $password = $_GET["password"];
-        //$password = md5($_GET["password"]);  // NOTICE: IMPORTANT
-        $location_id = $_GET["location"];
+        $encrypted = pg_escape_string(password_hash($password, PASSWORD_DEFAULT));  // NOTICE: IMPORTANT
+        $location_id = pg_escape_string($_GET["location"]);
 
         $query = pg_query($db, "SELECT * FROM labs");
         $matched = false;
@@ -22,9 +23,9 @@
         }
 
         if($matched == false) {
-            pg_query($db, "INSERT INTO labs(name, email, phone_no, location_id, password) VALUES ($name, $email, $phone, $location_id, $password)");
+            $result = pg_query($db, "INSERT INTO labs (name, email, phone_no, location_id, password) VALUES ('$name', '$email', '$phone', '$location_id', '$encrypted')");
 
-            $row = pg_fetch_row(pg_query($db, "SELECT * FROM labs WHERE email = $email"));
+            $row = pg_fetch_row(pg_query($db, "SELECT * FROM labs WHERE email = '$email'"));
             $id = $row[0];
 
             $_SESSION["id"] = $id;

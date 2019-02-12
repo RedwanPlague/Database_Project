@@ -25,17 +25,17 @@
             $found = false;
 
             while($found != true && $row = pg_fetch_row($query)) {
-                if(($selectOption == "patient" || $selectOption == "lab admin") && $email == $row[2] && $password == $row[5]) {
+                if(($selectOption == "patient" || $selectOption == "lab admin") && $email == $row[2] && password_verify($password, $row[5])) {
                     $id = $row[0];
                     $found = true;
                 }
 
-                if(($selectOption == "doctor") && $email == $row[2] && $password == $row[4]) {
+                if(($selectOption == "doctor") && $email == $row[2] && password_verify($password, $row[4])) {
                     $id = $row[0];
                     $found = true;
                 }
 
-                if(($selectOption == "collector") && $email == $row[3] && $password == $row[5]) {
+                if(($selectOption == "collector") && $email == $row[3] && password_verify($password, $row[5])) {
                     $id = $row[0];
                     $found = true;
                 }

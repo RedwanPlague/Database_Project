@@ -18,3 +18,8 @@ ALTER TABLE collectors ADD COLUMN password varchar(30) DEFAULT '123';
 
 ALTER TABLE tests ADD UNIQUE(name);
 ALTER TABLE samples ADD collected boolean ;
+
+ALTER TABLE collectors ALTER COLUMN password TYPE varchar(255);
+ALTER TABLE patients ALTER COLUMN password TYPE varchar(255);
+ALTER TABLE doctors ALTER COLUMN password TYPE varchar(255);
+ALTER TABLE labs ALTER COLUMN password TYPE varchar(255);
