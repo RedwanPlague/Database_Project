@@ -1,0 +1,10 @@
+body {
+    padding: 30px;  /* NOTICE */
+    border: none;  /* NOTICE */
+
+    background-image: url("back-ground.png");
+}
+
+#myText {
+    font-family: "Tahoma", serif;
+}
